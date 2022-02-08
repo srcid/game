@@ -41,6 +41,26 @@ class Game {
 
   void rightToLeft() {
     dev.log('right to left', name: 'game');
+
+    dev.log(_board.toString().replaceAll('],', '],\n'), name: 'left to right');
+
+    _board = _board.map((row) {
+      List<int> newRow = [];
+
+      for (final e in row.where((element) => element != 0)) {
+        if (newRow.isEmpty || newRow.last != e) {
+          newRow.add(e);
+        } else {
+          newRow.add(e + newRow.removeLast());
+        }
+      }
+
+      newRow.insertAll(0, List.filled(4 - newRow.length, 0));
+
+      return newRow.reversed.toList();
+    }).toList();
+
+    dev.log(_board.toString().replaceAll('],', '],\n'), name: 'left to right');
   }
 
   void topToDown() {
