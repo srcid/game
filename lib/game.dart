@@ -65,6 +65,31 @@ class Game {
 
   void topToDown() {
     dev.log('top to down', name: 'game');
+
+    dev.log(_board.toString().replaceAll('],', '],\n'), name: 'top to down');
+
+    for (int i = 0; i < 4; i++) {
+      final col = _board.map((e) => e[i]).toList();
+      List<int> newCol = [];
+
+      for (final e in col.reversed.where((element) => element != 0)) {
+        if (newCol.isEmpty || newCol.last != e) {
+          newCol.add(e);
+        } else {
+          newCol.add(e + newCol.removeLast());
+        }
+      }
+
+      newCol.insertAll(newCol.length, List.filled(4 - newCol.length, 0));
+
+      dev.log(newCol.toString().replaceAll(', ', ',\n '), name: 'newcol(${i})');
+
+      for (int j = 0; j < 4; j++) {
+        _board[j][i] = newCol.removeLast();
+      }
+    }
+
+    dev.log(_board.toString().replaceAll('],', '],\n'), name: 'top to down');
   }
 
   void bottomToUp() {
