@@ -46,18 +46,23 @@ class Game {
 
     _board = _board.map((row) {
       List<int> newRow = [];
+      bool lockSum = true;
 
       for (final e in row.where((element) => element != 0)) {
-        if (newRow.isEmpty || newRow.last != e) {
+        if (lockSum || newRow.last != e) {
           newRow.add(e);
+          lockSum = false;
         } else {
           newRow.add(e + newRow.removeLast());
+          lockSum = true;
         }
       }
 
-      newRow.insertAll(0, List.filled(4 - newRow.length, 0));
+      newRow.insertAll(newRow.length, List.filled(4 - newRow.length, 0));
 
-      return newRow.reversed.toList();
+      dev.log(newRow.toString(), name: 'newrow(${_board.indexOf(row)})');
+
+      return newRow.toList();
     }).toList();
 
     dev.log(_board.toString().replaceAll('],', '],\n'), name: 'left to right');
@@ -71,12 +76,15 @@ class Game {
     for (int i = 0; i < 4; i++) {
       final col = _board.map((e) => e[i]).toList();
       List<int> newCol = [];
+      bool lockSum = true;
 
       for (final e in col.reversed.where((element) => element != 0)) {
-        if (newCol.isEmpty || newCol.last != e) {
+        if (lockSum || newCol.last != e) {
           newCol.add(e);
+          lockSum = false;
         } else {
           newCol.add(e + newCol.removeLast());
+          lockSum = true;
         }
       }
 
@@ -98,12 +106,15 @@ class Game {
     for (int i = 0; i < 4; i++) {
       final col = _board.map((e) => e[i]).toList();
       List<int> newCol = [];
+      bool lockSum = true;
 
       for (final e in col.where((element) => element != 0)) {
-        if (newCol.isEmpty || newCol.last != e) {
+        if (lockSum || newCol.last != e) {
           newCol.add(e);
+          lockSum = false;
         } else {
           newCol.add(e + newCol.removeLast());
+          lockSum = true;
         }
       }
 
