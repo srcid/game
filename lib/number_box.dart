@@ -35,7 +35,11 @@ class NumberBox extends StatelessWidget {
       height: length,
       width: length,
       alignment: Alignment.center,
-      child: Text(value.toString()),
+      child: Text(
+        value != 0 ? value.toString() : '',
+        textScaleFactor: 2.0,
+        style: const TextStyle(fontWeight: FontWeight.bold),
+      ),
     );
   }
 }
