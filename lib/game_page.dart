@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import './number_box.dart';
 import './game.dart';
 
+import 'dart:developer' as dev;
+
 class GamePage extends StatefulWidget {
   //var gameboard = List<List<int>>.filled(4, List<int>.filled(4, 0));
   final game = Game();
@@ -24,24 +26,8 @@ class _GamePageState extends State<GamePage> {
     return Scaffold(
       body: Center(
         child: GestureDetector(
-          onHorizontalDragStart: (details) {
-            setState(() {
-              if (details.globalPosition.direction.floor() == 1) {
-                widget.game.leftToRight();
-              } else {
-                widget.game.rightToLeft();
-              }
-            });
-          },
-          onVerticalDragStart: (details) {
-            setState(() {
-              if (details.globalPosition.direction.floor() == 1) {
-                widget.game.bottomToUp();
-              } else {
-                widget.game.topToDown();
-              }
-            });
-          },
+          onHorizontalDragUpdate: horizontalDragHandler,
+          onVerticalDragUpdate: verticalDragHandler,
           child: Container(
             decoration: BoxDecoration(
                 color: Colors.black.withOpacity(0.2),
@@ -63,5 +49,37 @@ class _GamePageState extends State<GamePage> {
         ),
       ),
     );
+  }
+
+  void horizontalDragHandler(DragUpdateDetails details) {
+    const int sensitivity = 17;
+
+    if (details.delta.dx > sensitivity) {
+      dev.log('right', name: 'PointerMove');
+      setState(() {
+        widget.game.leftToRight();
+      });
+    } else if (details.delta.dx < -sensitivity) {
+      dev.log('left', name: 'PointerMove');
+      setState(() {
+        widget.game.rightToLeft();
+      });
+    }
+  }
+
+  void verticalDragHandler(DragUpdateDetails details) {
+    const int sensitivity = 17;
+
+    if (details.delta.dy > sensitivity) {
+      dev.log('down', name: 'PointerMove');
+      setState(() {
+        widget.game.topToDown();
+      });
+    } else if (details.delta.dy < -sensitivity) {
+      dev.log('up', name: 'PointerMove');
+      setState(() {
+        widget.game.bottomToUp();
+      });
+    }
   }
 }
