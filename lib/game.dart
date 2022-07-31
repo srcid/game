@@ -132,4 +132,22 @@ class Game {
 
     dev.log(_board.toString().replaceAll('],', '],\n'), name: 'bottom to up');
   }
+
+  drawAnEmptyCell() {
+    var zeros = _board
+        .map((e) => e.where((element) => element == 0))
+        .expand((element) => element);
+    return zeros.elementAt(Random().nextInt(zeros.length));
+  }
+
+  fillACell() {
+    var drawn = drawAnEmptyCell();
+
+    for (var row in _board) {
+      if (row.contains(drawn)) {
+        _board[_board.indexOf(row)][row.indexOf(drawn)] =
+            _canidates[Random().nextInt(3)];
+      }
+    }
+  }
 }
